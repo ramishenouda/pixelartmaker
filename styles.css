@@ -1,0 +1,104 @@
+body {
+  text-align: center;
+  font-family: 'Nanum Gothic', sans-serif;
+}
+
+#recommended {
+  position: absolute;
+  color: red;
+  left: 200px;
+  top: 20px;
+  z-index: 2;
+}
+
+#title {
+  width: 100%;
+  height: 45px;
+  color: rgb(207, 207, 207);
+  font-family: Monoton;
+  font-size: 40px;
+  background-color: #111;
+}
+
+table,
+tr,
+td {
+  border: 1px solid #111;
+}
+/*Center 783 406.5*/
+table {
+  position: fixed;
+  top: 335px;
+  left: 833px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+input, .toolsImage {
+  height: 2.3em;
+  border: none;
+  margin: 8px 4px 4px 4px;
+  resize: vertical;
+  outline:none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input[type="number"] {
+  width: 6em;
+  border-radius: 4px;
+}
+
+
+input[type="button"], input[type="submit"] {
+  background-color: #4CAF50;
+  border-radius: 4px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+  background-color: teal;
+}
+
+#menuBar {
+  color: rgb(165, 165, 165);
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 10px;
+}
+
+.changesMadeButtons {
+  width: 5em;
+
+}
+.gridButtons {
+  width: 11em;
+}
+
+.resetGrid {
+  background-color: rgb(179, 67, 67)!important;
+}
+
+.toolsImage {
+  margin-top: -12px;
+  height: 2.3em;
+  border-radius: 8px;
+}
+
+.toolsImage:hover {
+  background-color: #C0C04F;
+}
+
+#colorPicker {
+  border-radius:100%;
+  background-color: #111;
+}
+
+#pencil {
+  background-color: #C0C04F;
+}
