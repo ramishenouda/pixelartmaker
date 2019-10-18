@@ -1,3 +1,12 @@
+//N-ary Tree implementation to store all of the history 
+class History {
+    constructor(parent) {
+        this.parent = parent;
+        this.data = null;
+        this.nodes = new Array();
+    }
+}
+
 //Getting gird properties
 let girdHeight = document.getElementById("gridHeight");
 let girdWidth = document.getElementById("gridWidth");
@@ -14,58 +23,61 @@ let applyArea = document.getElementById("applyArea");
 let Pencil = true;
 let painting = false;
 let color;
-//Tree structure for holding the history, TODO illustrate more
-//The head
-let history = new Object(); 
-//dictionary holds current nodeMaster
-let nodeMaster;
-let lastNodeMaster = history;
-//current branchIndex Number
-let branchIndex = new Array();
+//The head to the tree
+let head = createHead();
+
+// //triggered when clicking Ctrl-Z or on undo button
+// let undoing = false;
+// //triggered when clicking Ctrl-Y or on redo button
+// let redoing = false;
 //The recommended text
 let recommended = document.getElementById("recommended"); 
-
+//Title and menubar 
 const title = document.getElementById("title");
 const menuBar = document.getElementById("menuBar");
-
-let maxCanvasSize = {"width" : (window.innerWidth + menuBar.offsetWidth) / 2, "height" : (window.innerHeight + title.offsetHeight) / 2};
+//Used to set the position of the table
+let boardSize = {"width" : (window.innerWidth + menuBar.offsetWidth) / 2, "height" : (window.innerHeight + title.offsetHeight) / 2};
 let CanvasSize;
 
+//-----------------------Grid functions Region
 function attemptToMakeGrid() {
     if(pixelCanvas.innerHTML == "")
     {
-        makeGrid();
+        makeGrid(girdHeight.value, girdWidth.value);
     }
-    else {
+    else 
         gridConfirmation();
-    }
 }
 
 function gridConfirmation() {
-    applyArea.innerHTML = '<span style="color:red">current work will be lost</span>' +
-        '<input type="submit" class="confirmation" value="Confirm" onclick="makeGrid()">' +
-        '<input type="button" value="Cancel" onclick="makeGridCancel()">';}
+    applyArea.innerHTML = 
+        `<input type="submit" class="confirmation" value="Confirm" onclick="makeGrid(${girdHeight.value}, ${girdWidth.value})">` +
+        '<input type="button" value="Cancel" onclick="makeGridCancel()">';
+}
 
 function makeGridCancel() {
     applyArea.innerHTML = '<input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">';
 }
 
-function makeGrid() {
+function makeGrid(rows, cols, elementsColors = null, re = false) {
     makeGridCancel();
-    let leftValue = maxCanvasSize.width - (cellWidth.value * girdWidth.value) / 2;
-    let topValue = maxCanvasSize.height - (cellHeight.value * girdHeight.value) / 2;
+    if(re == false)
+        addCurrentChanges();
+
+    let leftValue = boardSize.width - (cellWidth.value * girdWidth.value) / 2;
+    let topValue = boardSize.height - (cellHeight.value * girdHeight.value) / 2;
 
     pixelCanvas.style.left = leftValue > 205 ? `${leftValue}px` : '205px';
     pixelCanvas.style.top = topValue > 50 ? `${topValue}px` : '50px';
 
     //TODO don't remove existing cells
     pixelCanvas.innerHTML = "";
-
-    for(let row = 0; row < girdHeight.value; row++) {
+    
+    for(let row = 0; row < rows; row++) {
         let tr = document.createElement("tr");
         pixelCanvas.appendChild(tr);
 
-        for(let col = 0; col < girdWidth.value; col++)
+        for(let col = 0; col < cols; col++)
         {
             let td = document.createElement("td")
             td.height = cellHeight.value;
@@ -73,27 +85,38 @@ function makeGrid() {
             td.classList.add('tableData');
             td.classList.add(`${row + '' + col}`);
             tr.appendChild(td);
+
+            if(elementsColors != null) {
+                if(td.classList[1] in elementsColors)
+                {
+                    td.style.backgroundColor = elementsColors[td.classList[1]];
+                }
+
+                else if(elementsColors.length < 0)
+                    elementsColors = null;
+            }
         }
     }
+
     setEventListeners();
     getCurrentChanges();
 }
 
-function undoChanges() {
-    //back to start point
-    if(nodeMaster == lastNodeMaster)
-        return;
+function setCanvasSize() {
+    CanvasSize = {
+        "width" : window.innerWidth - (menuBar.offsetWidth / 1.5),
+        "height" : window.innerHeight + (title.offsetHeight / 1.5)
+    };
 }
 
-function redoChanges() {
-
-}
-
-
-function resetConfirmation()
-{
-    resetArea.innerHTML= '<input type="button" class="confirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
+function resetConfirmation() {
+    resetArea.innerHTML = '<span style="color:red">current work will be lost</span>' + 
+        '<input type="button" class="confirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
         '<input type="button" value="CANCEL" onclick="resetGridCancel()">';
+}
+
+function resetGridCancel() {
+    resetArea.innerHTML = '<input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>';
 }
 
 function resetGridConfirm() {
@@ -102,18 +125,85 @@ function resetGridConfirm() {
         tds[i].style.backgroundColor = "";
     }
 
+    makeGrid(0, 0);
     resetGridCancel();
+    // stopUndoingRedoing();
+}
+//-----------------------Grid functions END Region
+
+//-----------------------History functions Region
+function createHead() {
+    let Head = new History(null);
+    
+    let data = new Object();
+    data["gridSize"] = { "height": 0, "width": 0 };
+    data["cellSize"] = { "height": 0, "width": 0 };
+    data["colorPicker"] = document.getElementById('colorPicker').value; 
+    data["elementsColors"] = null;
+    
+    Head.data = data;
+    return Head;
 }
 
-function resetGridCancel() {
-    resetArea.innerHTML = '<input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>';
+function addCurrentChanges() {
+    if(getCurrentChanges() == head.data)
+        return;
+
+    head.nodes.push(new History(head));
+    head = head.nodes[head.nodes.length - 1];
+    head.data = getCurrentChanges();
 }
 
-document.body.style.zoom = '90%';
+function getCurrentChanges() {
+    let tds = document.getElementsByClassName("tableData");
+    let currentChanges = new Object();
+    let className, colorValue;
 
-function setCanvasSize() {
-    CanvasSize = {"width" : (window.innerWidth + 10 - menuBar.offsetWidth), "height" : (window.innerHeight - title.offsetHeight - 2)};
+    //getting classname CHECKED
+    //dictionary contains each className with the colorValue like this ClassName: Color
+    currentChanges["gridSize"] = { "height": parseInt(girdHeight.value), "width": parseInt(girdWidth.value) };
+    currentChanges["cellSize"] = { "height": parseInt(cellHeight.value), "width": parseInt(cellWidth.value) };
+    currentChanges["colorPicker"] = document.getElementById('colorPicker').value; 
+    currentChanges["elementsColors"] = new Object();
+
+    for(let i = 0; i < tds.length; i++)
+    {
+        className = tds[i].classList[1];
+        colorValue = tds[i].style.backgroundColor;
+        if(colorValue == "")
+            continue;
+        currentChanges.elementsColors[className] = colorValue;
+    }
+
+    return currentChanges;
 }
+
+function undoChanges() {
+    if(head.parent == null)
+        return;
+    
+    undoing = true;
+    head = head.parent;
+    
+    applySettings(head.data);
+    makeGrid(girdHeight.value, girdWidth.value, head.data.elementsColors, true);
+}
+
+function redoChanges() {
+
+}
+
+function applySettings(data) {
+    girdHeight.value = data.gridSize.height;
+    girdWidth.value = data.gridSize.width;
+
+    cellHeight.value = data.cellSize.height;
+    cellWidth.value = data.cellSize.width;
+
+    document.getElementById('colorPicker').value = data.colorPicker;
+}
+
+//-----------------------History function END Region
 
 function setRecommendedText () {
     setCanvasSize();
@@ -134,74 +224,40 @@ function setEventListeners() {
             }
         });
 
-        tds[i].addEventListener('mousedown', ()=> {
-            if(Pencil)
+        tds[i].addEventListener('mousedown', (e)=> {
+            if(e.which != 1)
+                return;
+
+            // stopUndoingRedoing();
+            resetGridCancel();
+            makeGridCancel();
+            painting = true;
+            if(Pencil) {
                 color = document.getElementById('colorPicker').value;
                 tds[i].style.background = '';
+            }
+
             tds[i].style.backgroundColor = color;
         });
     }
 }
 
-function setNodeMaster(node) {
-    let counter = 0;
-    for(item in history)
-    {
-        console.log(item);
-        parent++;
-        if(item === node)
-        {
-            console.log(item + ' ' + node);
-            break;
-        }
-    }
-    nodeMaster = node;
-    parent = counter;
-    child = 0;
-}
-
-function addCurrentChanges() {
-    nodeMaster[parent+''+child++] = getCurrentChanges();
-}
-
-function getCurrentChanges() {
-    let tds = document.getElementsByClassName("tableData");
-    let move = new Object();
-    let className, colorValue;
-
-    //getting classname CHECKED
-    //dictionary contains each className with the colorValue like this ClassName: Color
-    for(let i = 0; i < tds.length; i++)
-    {
-        className = tds[i].classList[1];
-        colorValue = tds[i].style.backgroundColor;
-        move[className] = colorValue;
-    }
-
-    return move;
-}
-
-
 $("#menuBar").submit(function(e) {
     e.preventDefault();
 });
 
-setCanvasSize();
-
 cellHeight.addEventListener('input', setRecommendedText);
 cellWidth.addEventListener('input', setRecommendedText);
 
-addEventListener('mousedown', () => {
-    painting = true
-});
+addEventListener('mouseup', (e) => {
+    if(painting == false || e.which != 1)
+        return;
 
-addEventListener('mouseup', () => {
-    painting = false
     addCurrentChanges();
+    painting = false
 });
 
 addEventListener("keydown", (event) => {
-    
     //P is down, triggernig the pencil
     if (event.keyCode === 80)
     {
@@ -232,19 +288,24 @@ addEventListener("keydown", (event) => {
     }
 });
 
-document.getElementById('pencil').addEventListener('mousedown', () =>{
+document.getElementById('pencil').addEventListener('mousedown', () => {
     document.getElementById('pencil').style.backgroundColor = '#C0C04F';
     document.getElementById('eraser').style.backgroundColor = 'transparent';
     color = document.getElementById('colorPicker').value;
     Pencil = true;
 });
 
-document.getElementById('eraser').addEventListener('mousedown', () =>{
+document.getElementById('eraser').addEventListener('mousedown', () => {
     document.getElementById('pencil').style.backgroundColor = 'transparent';
     document.getElementById('eraser').style.backgroundColor = '#C0C04F';
     color = '#ffffff';
     Pencil = false;
 });
 
+document.getElementById('colorPicker').addEventListener('change', () => {
+    addCurrentChanges();
+});
+
 setRecommendedText();
-setNodeMaster(history);
+setCanvasSize();
+document.body.style.zoom = '90%';
