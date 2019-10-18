@@ -5,11 +5,16 @@
     <meta charset="UTF-8">
     <title>Pixel Art Maker!</title>
     <script
-  src="https://code.jquery.com/jquery-3.4.1.js"
-  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-  crossorigin="anonymous"></script>
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous">
+    </script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link 
+        rel="stylesheet" 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" 
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Monoton">
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
@@ -17,31 +22,39 @@
 </head>
 
 <body ondragstart="return false;" ondrop="return false;">
-    <h1 id="title">Lab: Pixel Art Maker</h1>
+    <h1 id="title"> Lab: Pixel Art Maker </h1>
     <div id="recommended"></div>
 
     <form id="menuBar">
-        <h3>HotKey TAP</h3> <br>
         <h4>Grid Properties</h4>
-        Grid Height
-        <input type="number" min="1" value="1" id="gridHeight"> Grid Width
-        <input type="number" min="1" value="1" id="gridWidth">
-        
-        <h4>Table Properties</h4> 
-        Cell Height
-        <input type="number" min="1" value="3" id="cellHeight"> Cell Width
-        <input type="number" min="1" value="3" id="cellWidth">
-        <h4>TOOLS (P, E, C)</h4>
-        <img src="assets/pencil.png" id="pencil" alt="pencil" class="toolsImage">
-        <img src="assets/eraser.png" id="eraser" alt="eraser" class="toolsImage">
-        <input type="color" id="colorPicker" value="#111111">
+        <div class="gridProperties section">
+            Grid Height
+            <input type="number" min="1" value="1" id="gridHeight"> Grid Width
+            <input type="number" min="1" value="1" id="gridWidth">
+        </div>
 
-        <input type="submit" class="gridButtons" value="APPLY" onclick="makeGrid()">
-        <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
-        <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
-        <input type="button" class="gridButtons" value="SAVE AS PNG" onclick="saveGrid()">
+        <h4>Table Properties</h4>
+        <div class= "tableProperties section">
+            Cell Height
+            <input type="number" min="1" value="3" id="cellHeight"> Cell Width
+            <input type="number" min="1" value="3" id="cellWidth">
+        </div>
         
-        <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetGrid()">
+        <h4>TOOLS (P, E, C)</h4>
+        <div class="tools section">
+            <img src="assets/pencil.png" id="pencil" alt="pencil" class="toolsImage">
+            <img src="assets/eraser.png" id="eraser" alt="eraser" class="toolsImage">
+            <input type="color" id="colorPicker" value="#111111">
+        </div>
+        
+        <div class="options section">
+            <input type="submit" class="gridButtons" value="APPLY" onclick="makeGrid()">
+            <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
+            <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
+            <input type="button" class="gridButtons" value="SAVE AS PNG" onclick="saveGrid()">
+            <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetGrid()"> <br>
+        </div>
+        
         <!-- <input type="button" class="resetConfirmation" value="Confirm" onclick="undoChanges()">
         <input type="button" class="resetConfirmation" value="Cancel" onclick="redoChanges()"> -->
     </form>

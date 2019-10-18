@@ -27,17 +27,23 @@ function makeGrid() {
     pixelCanvas.style.left = leftValue > 205 ? `${leftValue}px` : '205px';
     pixelCanvas.style.top = topValue > 50 ? `${topValue}px` : '50px';
 
-    let innerHTMLValue = '';
+    //TODO don't remove existing cells
+    pixelCanvas.innerHTML = "";
+
     for(let row = 0; row < girdHeight.value; row++) {
-        innerHTMLValue += '<tr>'
+        let tr = document.createElement("tr");
+        pixelCanvas.appendChild(tr);
+
         for(let col = 0; col < girdWidth.value; col++)
         {
-            innerHTMLValue += `<td width=${cellWidth.value} height=${cellHeight.value} class='tableData ${row + '' + col}'></td>`;
+            let td = document.createElement("td")
+            td.height = cellHeight.value;
+            td.width = cellWidth.value;
+            td.classList.add('tableData');
+            td.classList.add(`${row + '' + col}`);
+            tr.appendChild(td);
         }
-        innerHTMLValue += '</tr>';  
     }
-
-    pixelCanvas.innerHTML = innerHTMLValue;
     setEventListeners();
 }
 
@@ -77,6 +83,7 @@ function setEventListeners() {
         tds[i].addEventListener('mouseenter', ()=> {
             if(painting)
             {
+                tds[i].style.background = "";
                 tds[i].style.backgroundColor = color;
             }
         });
@@ -84,6 +91,7 @@ function setEventListeners() {
         tds[i].addEventListener('mousedown', ()=> {
             if(Pencil)
                 color = document.getElementById('colorPicker').value;
+                tds[i].style.background = '';
             tds[i].style.backgroundColor = color;
         });
     }
@@ -105,6 +113,8 @@ addEventListener('mousedown', () => {
 addEventListener('mouseup', () => painting = false);
 
 addEventListener("keydown", (event) => {
+    
+    //P is down, triggernig the pencil
     if (event.keyCode === 80)
     {
         document.getElementById('pencil').style.backgroundColor = '#C0C04F';
@@ -113,15 +123,16 @@ addEventListener("keydown", (event) => {
         Pencil = true;
     }
 
+    //E is down, triggernig the eraser
     else if(event.keyCode === 69)
     {
         document.getElementById('pencil').style.backgroundColor = 'transparent';
         document.getElementById('eraser').style.backgroundColor = '#C0C04F';
         color = 'white';
-        console.log(color);
         Pencil = false;
     }
 
+    //E is down, triggernig the eraser
     else if(event.keyCode === 67)
     {
         document.getElementById('colorPicker').click();

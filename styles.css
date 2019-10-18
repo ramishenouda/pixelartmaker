@@ -1,6 +1,13 @@
 body {
   text-align: center;
   font-family: 'Nanum Gothic', sans-serif;
+  /* TODO : Cover older browsers */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #recommended {
@@ -25,13 +32,14 @@ tr,
 td {
   border: 1px solid #111;
 }
-/*Center 783 406.5*/
+
 table {
   position: fixed;
-  top: 335px;
-  left: 833px;
+  top: 406.5px;
+  left: 783px;
   border-collapse: collapse;
   table-layout: fixed;
+  border: none;
 }
 
 input, .toolsImage {
@@ -50,7 +58,7 @@ input[type="number"] {
 }
 
 
-input[type="button"], input[type="submit"] {
+input[type="button"], input[type="submit"]{
   background-color: #4CAF50;
   border-radius: 4px;
 }
@@ -62,7 +70,7 @@ input[type="button"]:hover, input[type="submit"]:hover {
 #menuBar {
   color: rgb(165, 165, 165);
   height: 100%;
-  width: 200px;
+  width: 14%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -72,9 +80,12 @@ input[type="button"]:hover, input[type="submit"]:hover {
   padding-top: 10px;
 }
 
+.section {
+  margin-bottom: 10px;
+  background-color: rgb(32, 32, 32) !important;
+}
 .changesMadeButtons {
   width: 5em;
-
 }
 .gridButtons {
   width: 11em;
@@ -90,15 +101,11 @@ input[type="button"]:hover, input[type="submit"]:hover {
   border-radius: 8px;
 }
 
-.toolsImage:hover {
+.toolsImage:hover, #pencil {
   background-color: #C0C04F;
 }
 
 #colorPicker {
-  border-radius:100%;
-  background-color: #111;
-}
-
-#pencil {
-  background-color: #C0C04F;
+  background-color: transparent;
+  border-radius: 100%;
 }
