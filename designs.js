@@ -6,8 +6,9 @@ let cellHeight = document.getElementById("cellHeight");
 let cellWidth = document.getElementById("cellWidth");
 //The table or canvas
 let pixelCanvas = document.getElementById("pixelCanvas");
-//The area contaning the RESET GRID button 
+//The area scontaning the RESET GRID and APPLY buttons 
 let resetArea = document.getElementById("resetArea");
+let applyArea = document.getElementById("applyArea");
 //True means the action is active, if the pencil is false the earser is triggered 
 //The earser is just painting but with the same color as the background is
 let Pencil = true;
@@ -30,7 +31,27 @@ const menuBar = document.getElementById("menuBar");
 let maxCanvasSize = {"width" : (window.innerWidth + menuBar.offsetWidth) / 2, "height" : (window.innerHeight + title.offsetHeight) / 2};
 let CanvasSize;
 
+function attemptToMakeGrid() {
+    if(pixelCanvas.innerHTML == "")
+    {
+        makeGrid();
+    }
+    else {
+        gridConfirmation();
+    }
+}
+
+function gridConfirmation() {
+    applyArea.innerHTML = '<span style="color:red">current work will be lost</span>' +
+        '<input type="submit" class="confirmation" value="Confirm" onclick="makeGrid()">' +
+        '<input type="button" value="Cancel" onclick="makeGridCancel()">';}
+
+function makeGridCancel() {
+    applyArea.innerHTML = '<input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">';
+}
+
 function makeGrid() {
+    makeGridCancel();
     let leftValue = maxCanvasSize.width - (cellWidth.value * girdWidth.value) / 2;
     let topValue = maxCanvasSize.height - (cellHeight.value * girdHeight.value) / 2;
 
@@ -71,9 +92,8 @@ function redoChanges() {
 
 function resetConfirmation()
 {
-    
-    resetArea.innerHTML= '<input type="button" class="resetConfirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
-        '<input type="button" class="resetConfirmation" value="CANCEL" onclick="resetGridCancel()">';
+    resetArea.innerHTML= '<input type="button" class="confirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
+        '<input type="button" value="CANCEL" onclick="resetGridCancel()">';
 }
 
 function resetGridConfirm() {

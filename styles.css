@@ -12,7 +12,7 @@ body {
 
 #recommended {
   position: absolute;
-  color: red;
+  color: rgb(218, 218, 218);
   left: 200px;
   top: 20px;
   z-index: 2;
@@ -91,7 +91,7 @@ input[type="button"]:hover, input[type="submit"]:hover {
   width: 11em;
 }
 
-.resetGrid {
+.resetGrid, .confirmation {
   background-color: rgb(179, 67, 67)!important;
 }
 
