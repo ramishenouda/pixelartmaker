@@ -5,12 +5,22 @@ let girdWidth = document.getElementById("gridWidth");
 let cellHeight = document.getElementById("cellHeight");
 let cellWidth = document.getElementById("cellWidth");
 //The table or canvas
-let pixelCanvas = document.getElementById("pixelCanvas"); 
+let pixelCanvas = document.getElementById("pixelCanvas");
+//The area contaning the RESET GRID button 
+let resetArea = document.getElementById("resetArea");
 //True means the action is active, if the pencil is false the earser is triggered 
 //The earser is just painting but with the same color as the background is
 let Pencil = true;
 let painting = false;
 let color;
+//Tree structure for holding the history, TODO illustrate more
+//The head
+let history = new Object(); 
+//dictionary holds current nodeMaster
+let nodeMaster;
+let lastNodeMaster = history;
+//current branchIndex Number
+let branchIndex = new Array();
 //The recommended text
 let recommended = document.getElementById("recommended"); 
 
@@ -45,22 +55,38 @@ function makeGrid() {
         }
     }
     setEventListeners();
+    getCurrentChanges();
 }
 
 function undoChanges() {
+    //back to start point
+    if(nodeMaster == lastNodeMaster)
+        return;
+}
+
+function redoChanges() {
 
 }
 
-function undoChanges() {
 
+function resetConfirmation()
+{
+    
+    resetArea.innerHTML= '<input type="button" class="resetConfirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
+        '<input type="button" class="resetConfirmation" value="CANCEL" onclick="resetGridCancel()">';
 }
 
-function resetGrid() {
+function resetGridConfirm() {
+    let tds = document.getElementsByClassName("tableData");
+    for(let i = 0; i < tds.length; i++) {
+        tds[i].style.backgroundColor = "";
+    }
 
+    resetGridCancel();
 }
 
-function saveGrid() {
-
+function resetGridCancel() {
+    resetArea.innerHTML = '<input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>';
 }
 
 document.body.style.zoom = '90%';
@@ -97,6 +123,45 @@ function setEventListeners() {
     }
 }
 
+function setNodeMaster(node) {
+    let counter = 0;
+    for(item in history)
+    {
+        console.log(item);
+        parent++;
+        if(item === node)
+        {
+            console.log(item + ' ' + node);
+            break;
+        }
+    }
+    nodeMaster = node;
+    parent = counter;
+    child = 0;
+}
+
+function addCurrentChanges() {
+    nodeMaster[parent+''+child++] = getCurrentChanges();
+}
+
+function getCurrentChanges() {
+    let tds = document.getElementsByClassName("tableData");
+    let move = new Object();
+    let className, colorValue;
+
+    //getting classname CHECKED
+    //dictionary contains each className with the colorValue like this ClassName: Color
+    for(let i = 0; i < tds.length; i++)
+    {
+        className = tds[i].classList[1];
+        colorValue = tds[i].style.backgroundColor;
+        move[className] = colorValue;
+    }
+
+    return move;
+}
+
+
 $("#menuBar").submit(function(e) {
     e.preventDefault();
 });
@@ -110,7 +175,10 @@ addEventListener('mousedown', () => {
     painting = true
 });
 
-addEventListener('mouseup', () => painting = false);
+addEventListener('mouseup', () => {
+    painting = false
+    addCurrentChanges();
+});
 
 addEventListener("keydown", (event) => {
     
@@ -136,6 +204,11 @@ addEventListener("keydown", (event) => {
     else if(event.keyCode === 67)
     {
         document.getElementById('colorPicker').click();
+        //set the Pencil as the active tool
+        document.getElementById('pencil').style.backgroundColor = '#C0C04F';
+        document.getElementById('eraser').style.backgroundColor = 'transparent';
+        color = document.getElementById('colorPicker').value;
+        Pencil = true;
     }
 });
 
@@ -152,3 +225,6 @@ document.getElementById('eraser').addEventListener('mousedown', () =>{
     color = '#ffffff';
     Pencil = false;
 });
+
+setRecommendedText();
+setNodeMaster(history);

@@ -70,14 +70,14 @@ input[type="button"]:hover, input[type="submit"]:hover {
 #menuBar {
   color: rgb(165, 165, 165);
   height: 100%;
-  width: 14%;
+  width: 200px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
   background-color: #111;
   overflow-x: hidden;
-  padding-top: 10px;
+  padding-top: 40px;
 }
 
 .section {

@@ -36,8 +36,8 @@
         <h4>Table Properties</h4>
         <div class= "tableProperties section">
             Cell Height
-            <input type="number" min="1" value="3" id="cellHeight"> Cell Width
-            <input type="number" min="1" value="3" id="cellWidth">
+            <input type="number" min="1" value="8" id="cellHeight"> Cell Width
+            <input type="number" min="1" value="8" id="cellWidth">
         </div>
         
         <h4>TOOLS (P, E, C)</h4>
@@ -47,14 +47,19 @@
             <input type="color" id="colorPicker" value="#111111">
         </div>
         
+        <h4>OPTIONS</h4>
         <div class="options section">
             <input type="submit" class="gridButtons" value="APPLY" onclick="makeGrid()">
             <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
             <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
-            <input type="button" class="gridButtons" value="SAVE AS PNG" onclick="saveGrid()">
-            <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetGrid()"> <br>
+            <!-- TODO: SAVE IMAGES -->
+            <!-- <input type="button" class="gridButtons" value="SAVE AS PNG" onclick="saveGrid()"> -->
+                    
+        <div id="resetArea">
+            <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>
         </div>
-        
+        </div>
+
         <!-- <input type="button" class="resetConfirmation" value="Confirm" onclick="undoChanges()">
         <input type="button" class="resetConfirmation" value="Cancel" onclick="redoChanges()"> -->
     </form>
