@@ -25,11 +25,6 @@ let painting = false;
 let color;
 //The head to the tree
 let head = createHead();
-
-// //triggered when clicking Ctrl-Z or on undo button
-// let undoing = false;
-// //triggered when clicking Ctrl-Y or on redo button
-// let redoing = false;
 //The recommended text
 let recommended = document.getElementById("recommended"); 
 //Title and menubar 
@@ -127,7 +122,6 @@ function resetGridConfirm() {
 
     makeGrid(0, 0);
     resetGridCancel();
-    // stopUndoingRedoing();
 }
 //-----------------------Grid functions END Region
 
@@ -152,6 +146,7 @@ function addCurrentChanges() {
     head.nodes.push(new History(head));
     head = head.nodes[head.nodes.length - 1];
     head.data = getCurrentChanges();
+    head.data.index = head.nodes.length - 1;
 }
 
 function getCurrentChanges() {
@@ -181,16 +176,21 @@ function getCurrentChanges() {
 function undoChanges() {
     if(head.parent == null)
         return;
-    
-    undoing = true;
-    head = head.parent;
-    
+
+    head = head.parent;    
     applySettings(head.data);
     makeGrid(girdHeight.value, girdWidth.value, head.data.elementsColors, true);
 }
 
 function redoChanges() {
-
+    
+    if(head.nodes.length < 1)
+        return;
+    
+    head = head.nodes[head.nodes.length - 1];    
+    applySettings(head.data);
+    makeGrid(girdHeight.value, girdWidth.value, head.data.elementsColors, true);
+    
 }
 
 function applySettings(data) {
@@ -228,7 +228,6 @@ function setEventListeners() {
             if(e.which != 1)
                 return;
 
-            // stopUndoingRedoing();
             resetGridCancel();
             makeGridCancel();
             painting = true;
