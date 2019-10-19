@@ -10,8 +10,9 @@ body {
 }
 
 #recommended {
+  width: fit-content;
   position: fixed;
-  color: rgb(218, 218, 218);
+  color: rgb(197, 197, 197);
   left: 220px;
   top: 20px;
   z-index: 3;
@@ -52,7 +53,7 @@ table {
   left: 0;
   background-color: #111;
   overflow-x: hidden;
-  padding-top: 20px;
+  padding-top: 40px;
 }
 
 .section {

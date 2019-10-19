@@ -205,12 +205,11 @@ function getCurrentChanges() {
     let currentChanges = new Object();
     let className, colorValue;
 
-    //getting classname CHECKED
     //dictionary contains each className with the colorValue like this ClassName: Color
-    currentChanges['canvasSize'] = { 'height': parseInt(canvasHeight.value), 'width': parseInt(canvasWidth.value) };
-    currentChanges['cellSize'] = { 'height': parseInt(cellHeight.value), 'width': parseInt(cellWidth.value) };
-    currentChanges['colorPicker'] = document.getElementById('colorPicker').value; 
-    currentChanges['elementsColors'] = new Object();
+    currentChanges.canvasSize = { 'height': parseInt(canvasHeight.value), 'width': parseInt(canvasWidth.value) };
+    currentChanges.cellSize = { 'height': parseInt(cellHeight.value), 'width': parseInt(cellWidth.value) };
+    currentChanges.colorPicker = document.getElementById('colorPicker').value; 
+    currentChanges.elementsColors = new Object();
 
     for(let i = 0; i < tds.length; i++)
     {
@@ -267,6 +266,7 @@ function setRecommendedText () {
     document.getElementById('recommended').style.left = menuBar.offsetWidth +'px';
 }
 
+//------------------------Event Listeners Region
 function setEventListeners() {
     var tds = document.getElementsByClassName('tableData');
     for(let i = 0; i < tds.length; i++)
