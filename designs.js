@@ -263,7 +263,7 @@ function setRecommendedText () {
     setCanvasSize();
     let recommendedHeight = Math.floor(CanvasSize.height / (cellHeight.value * 1.1));
     let recommendedWidth = Math.floor(CanvasSize.width / (cellWidth.value * 1.1));
-    document.getElementById('recommended').innerHTML = `Recommended canvas ${recommendedHeight} x ${recommendedWidth}`;
+    document.getElementById('recommended').innerHTML = `Recommended canvas ${recommendedHeight} x ${recommendedWidth}, zoom 80%`;
     document.getElementById('recommended').style.left = menuBar.offsetWidth +'px';
 }
 
