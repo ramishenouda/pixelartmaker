@@ -27,19 +27,18 @@ body {
   background-color: #111;
 }
 
-table,
-tr,
 td {
-  border: 1px solid #111;
+  border: 1px solid #cab3b3;
 }
 
 table {
-  position: fixed;
-  top: 406.5px;
-  left: 783px;
+  position: absolute;
+  width: max-content;
+  height: max-content;
+  left: 205px;
+  top: 50px;
   border-collapse: collapse;
   table-layout: fixed;
-  border: none;
 }
 
 input, .toolsImage {

@@ -12,6 +12,7 @@ let girdHeight = document.getElementById("gridHeight");
 let girdWidth = document.getElementById("gridWidth");
 let oldGridHeight = null;
 let oldGridWidth = null;
+let borderState = true;
 //Getting cells properties
 let cellHeight = document.getElementById("cellHeight");
 let cellWidth = document.getElementById("cellWidth");
@@ -85,9 +86,9 @@ function makeGrid(rows, cols, re = false, shift = true) {
                         continue;
                     }
                     
-                    if(`${parseInt(row) + '' + parseInt(col)}` in elementsColors) {
-                        elementsColors[`${(row + shiftY) + '' + (col + shiftX)}`] = elementsColors[`${parseInt(row) + '' + parseInt(col)}`];
-                        delete elementsColors[`${row + '' + col}`];
+                    if(`${parseInt(row) + '_' + parseInt(col)}` in elementsColors) {
+                        elementsColors[`${(row + shiftY) + '_' + (col + shiftX)}`] = elementsColors[`${parseInt(row) + '_' + parseInt(col)}`];
+                        delete elementsColors[`${row + '_' + col}`];
                     }
                 }
             }
@@ -123,7 +124,8 @@ function makeGrid(rows, cols, re = false, shift = true) {
 
     oldGridHeight = parseInt(girdHeight.value);
     oldGridWidth = parseInt(girdWidth.value);
-
+    
+    triggerBorder(borderState);
     setEventListeners();
     getCurrentChanges();
 }
@@ -153,6 +155,25 @@ function resetGridConfirm() {
 
     makeGrid(0, 0);
     resetGridCancel();
+}
+
+function triggerBorder(border = null) {
+    if(border == null)
+        border = !borderState;
+    let tds = document.getElementsByTagName('td');
+    if(border == true) {
+        for(let i = 0; i < tds.length; i++) {
+            tds[i].style.border = '1px solid #cab3b3';
+        }
+    }
+
+    else
+    {
+        for(let i = 0; i < tds.length; i++) {
+            tds[i].style.border = 'none';
+        }
+    }
+    borderState = border;
 }
 //-----------------------Grid functions END Region
 

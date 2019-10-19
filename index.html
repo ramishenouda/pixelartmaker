@@ -52,18 +52,18 @@
             <div id="applyArea">
                 <input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">
             </div>
+            <div>
+                <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
+                <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
+            </div>
+            <div id="borderArea">
+                <input class="gridButtons boardArea" type="button" value="TRIGGER BORDER" onclick="triggerBorder()"> <br>
+            </div>
 
-            <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
-            <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
-            <!-- TODO: SAVE IMAGES -->
-            <!-- <input type="button" class="gridButtons" value="SAVE AS PNG" onclick="saveGrid()"> -->
-        <div id="resetArea">
-            <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>
+            <div id="resetArea">
+                <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>
+            </div>
         </div>
-        </div>
-
-        <!-- <input type="button" class="resetConfirmation" value="Confirm" onclick="undoChanges()">
-        <input type="button" class="resetConfirmation" value="Cancel" onclick="redoChanges()"> -->
     </form>
 
     <table class="w-auto" id="pixelCanvas"></table>
