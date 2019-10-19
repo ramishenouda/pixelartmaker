@@ -1,7 +1,6 @@
 body {
   text-align: center;
   font-family: 'Nanum Gothic', sans-serif;
-  /* TODO : Cover older browsers */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -11,7 +10,7 @@ body {
 }
 
 #recommended {
-  position: absolute;
+  position: fixed;
   color: rgb(218, 218, 218);
   left: 200px;
   top: 20px;
@@ -19,6 +18,7 @@ body {
 }
 
 #title {
+  position: fixed;
   width: 100%;
   height: 45px;
   color: rgb(207, 207, 207);
