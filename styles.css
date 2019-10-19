@@ -14,7 +14,7 @@ body {
   color: rgb(218, 218, 218);
   left: 220px;
   top: 20px;
-  z-index: 2;
+  z-index: 3;
 }
 
 #title {
@@ -25,7 +25,7 @@ body {
   font-family: Monoton;
   font-size: 40px;
   background-color: #111;
-  z-index: 2;
+  z-index: 1;
 }
 
 td {
@@ -36,10 +36,9 @@ table {
   position: absolute;
   width: max-content;
   height: max-content;
-  left: 205px;
+  left: 225px;
   top: 50px;
   border-collapse: collapse;
-  table-layout: fixed;
 }
 
 
@@ -53,7 +52,7 @@ table {
   left: 0;
   background-color: #111;
   overflow-x: hidden;
-  padding-top: 40px;
+  padding-top: 20px;
 }
 
 .section {
@@ -62,7 +61,7 @@ table {
 }
 
 .history-buttons {
-  width: 5.8em;
+  width: 43%;
 }
 
 .canvas-buttons {

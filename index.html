@@ -54,7 +54,8 @@
         <div class="section">
             <div>
                 <input type="button" class="history-buttons" value="↶" onclick="undoChanges()">
-                <input type="button" class="history-buttons" value="↷" onclick="redoChanges()">
+                <input type="button" class="history-buttons" value="↷" onclick="redoChanges()"> <br>
+                <input class="canvas-buttons" type="button" value="History" onclick="showHistory()"> <br>
             </div>
             <div>
                 <input class="canvas-buttons" type="button" value="TRIGGER BORDER" onclick="triggerBorder()"> <br>
@@ -67,7 +68,7 @@
     </form>
 
     <table class="w-auto" id="pixelCanvas"></table>
-
+    <div id="visualTree"></div>
     <script src="designs.js"></script>
 </body>
 </html>

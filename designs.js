@@ -49,9 +49,9 @@ function attemptToMakeCanvas() {
 
 function canvasConfirmation() {
     resetCanvasCancel();
-    applyArea.innerHTML = '<span style="color:red"/>Your work may conflict</span> <br>' +
-        `<input type="submit" class="confirmation" value="Confirm" onclick="makeCanvas(${canvasHeight.value}, ${canvasWidth.value})">` +
-        '<input type="button" value="Cancel" onclick="makeCanvasCancel()">';
+    applyArea.innerHTML =
+        `<input type="submit" class="confirmation history-buttons" value="Confirm" onclick="makeCanvas(${canvasHeight.value}, ${canvasWidth.value})">` +
+        '<input type="button" class="history-buttons" value="Cancel" onclick="makeCanvasCancel()">';
 }
 
 function makeCanvasCancel() {
@@ -60,9 +60,9 @@ function makeCanvasCancel() {
 
 function resetConfirmation() {
     makeCanvasCancel();
-    resetArea.innerHTML = '<span style="color:red">current work will be lost</span> <br>' + 
-        '<input type="button" class="confirmation" value="CONFIRM" onclick="resetCanvasConfirm()">' +
-        '<input type="button" value="CANCEL" onclick="resetCanvasCancel()">';
+    resetArea.innerHTML = 
+        '<input type="button" class="confirmation history-buttons" value="CONFIRM" onclick="resetCanvasConfirm()">' +
+        '<input type="button" class="history-buttons" value="CANCEL" onclick="resetCanvasCancel()">';
 }
 
 function resetCanvasCancel() {
@@ -89,8 +89,8 @@ function makeCanvas(rows, cols, re = false, shift = true) {
     let leftValue = boardSize.width - (cellWidth.value * canvasWidth.value) / 2;
     let topValue = boardSize.height - (cellHeight.value * canvasHeight.value) / 2;
 
-    pixelCanvas.style.left = leftValue > 205 ? `${leftValue}px` : '205px';
-    pixelCanvas.style.top = topValue > 50 ? `${topValue}px` : '50px';
+    pixelCanvas.style.left = leftValue > parseInt(menuBar.offsetWidth) ? `${leftValue}px` : `${parseInt(menuBar.offsetWidth) + 5}px`;
+    pixelCanvas.style.top = topValue > parseInt(title.offsetHeight) ? `${topValue}px` : `${title.offsetHeight + 5}px`;
 
     //TODO don't remove existing cells
     pixelCanvas.innerHTML = "";
@@ -254,6 +254,9 @@ function applySettings(data) {
     document.getElementById('colorPicker').value = data.colorPicker;
 }
 
+function showHistory() {
+    
+}
 //-----------------------History function END Region
 
 function setRecommendedText () {
