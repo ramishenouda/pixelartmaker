@@ -7,20 +7,20 @@ class History {
     }
 }
 
-//Getting gird properties
-let girdHeight = document.getElementById("gridHeight");
-let girdWidth = document.getElementById("gridWidth");
-let oldGridHeight = null;
-let oldGridWidth = null;
+//Getting canvas properties
+let canvasHeight = document.getElementById("canvasHeight");
+let canvasWidth = document.getElementById("canvasWidth");
+let oldCanvasHeight = null;
+let oldCanvasWidth = null;
 let borderState = true;
 //Getting cells properties
-let cellHeight = document.getElementById("cellHeight");
-let cellWidth = document.getElementById("cellWidth");
+let cellHeight = document.getElementById('cellHeight');
+let cellWidth = document.getElementById('cellWidth');
 //The table or canvas
-let pixelCanvas = document.getElementById("pixelCanvas");
-//The area scontaning the RESET GRID and APPLY buttons 
-let resetArea = document.getElementById("resetArea");
-let applyArea = document.getElementById("applyArea");
+let pixelCanvas = document.getElementById('pixelCanvas');
+//The area scontaning the RESET CANVAS and APPLY buttons 
+let resetArea = document.getElementById('resetArea');
+let applyArea = document.getElementById('applyArea');
 //True means the action is active, if the pencil is false the earser is triggered 
 //The earser is just painting but with the same color as the background is
 let Pencil = true;
@@ -29,43 +29,65 @@ let color;
 //The head to the tree
 let head = createHead();
 //The recommended text
-let recommended = document.getElementById("recommended"); 
+let recommended = document.getElementById('recommended'); 
 //Title and menubar 
-const title = document.getElementById("title");
-const menuBar = document.getElementById("menuBar");
+const title = document.getElementById('title');
+const menuBar = document.getElementById('menuBar');
 //Used to set the position of the table
-let boardSize = {"width" : (window.innerWidth + menuBar.offsetWidth) / 2, "height" : (window.innerHeight + title.offsetHeight) / 2};
+let boardSize = {'width' : (window.innerWidth + menuBar.offsetWidth) / 2, 'height' : (window.innerHeight + title.offsetHeight) / 2};
 let CanvasSize;
 
-//-----------------------Grid functions Region
-function attemptToMakeGrid() {
+//-----------------------Canvas functions Region
+function attemptToMakeCanvas() {
     if(pixelCanvas.innerHTML == "")
     {
-        makeGrid(girdHeight.value, girdWidth.value);
+        makeCanvas(canvasHeight.value, canvasWidth.value);
     }
     else 
-        gridConfirmation();
+        canvasConfirmation();
 }
 
-function gridConfirmation() {
-    applyArea.innerHTML = '<span style="color:red"/>Your work may conflict</span>' +
-        `<input type="submit" class="confirmation" value="Confirm" onclick="makeGrid(${girdHeight.value}, ${girdWidth.value})">` +
-        '<input type="button" value="Cancel" onclick="makeGridCancel()">';
+function canvasConfirmation() {
+    resetCanvasCancel();
+    applyArea.innerHTML = '<span style="color:red"/>Your work may conflict</span> <br>' +
+        `<input type="submit" class="confirmation" value="Confirm" onclick="makeCanvas(${canvasHeight.value}, ${canvasWidth.value})">` +
+        '<input type="button" value="Cancel" onclick="makeCanvasCancel()">';
 }
 
-function makeGridCancel() {
-    applyArea.innerHTML = '<input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">';
+function makeCanvasCancel() {
+    applyArea.innerHTML = '<input type="submit" class="canvas-buttons" value="APPLY" onclick="attemptToMakeCanvas()">';
 }
 
-function makeGrid(rows, cols, re = false, shift = true) {
-    makeGridCancel();
+function resetConfirmation() {
+    makeCanvasCancel();
+    resetArea.innerHTML = '<span style="color:red">current work will be lost</span> <br>' + 
+        '<input type="button" class="confirmation" value="CONFIRM" onclick="resetCanvasConfirm()">' +
+        '<input type="button" value="CANCEL" onclick="resetCanvasCancel()">';
+}
+
+function resetCanvasCancel() {
+    resetArea.innerHTML = '<input class="canvas-buttons confirmation" type="button" value="RESET CANVAS" onclick="resetConfirmation()"> <br>';
+}
+
+function resetCanvasConfirm() {
+    let tds = document.getElementsByClassName('tableData');
+    for(let i = 0; i < tds.length; i++) {
+        tds[i].style.backgroundColor = '';
+    }
+
+    makeCanvas(0, 0);
+    resetCanvasCancel();
+}
+
+function makeCanvas(rows, cols, re = false, shift = true) {
+    makeCanvasCancel();
     if(re == false)
         addCurrentChanges();
     
     elementsColors = head.data.elementsColors;
 
-    let leftValue = boardSize.width - (cellWidth.value * girdWidth.value) / 2;
-    let topValue = boardSize.height - (cellHeight.value * girdHeight.value) / 2;
+    let leftValue = boardSize.width - (cellWidth.value * canvasWidth.value) / 2;
+    let topValue = boardSize.height - (cellHeight.value * canvasHeight.value) / 2;
 
     pixelCanvas.style.left = leftValue > 205 ? `${leftValue}px` : '205px';
     pixelCanvas.style.top = topValue > 50 ? `${topValue}px` : '50px';
@@ -74,14 +96,14 @@ function makeGrid(rows, cols, re = false, shift = true) {
     pixelCanvas.innerHTML = "";
     
     //or oldCellWidth
-    if(oldGridHeight != null && shift == true) {
+    if(oldCanvasHeight != null && shift == true) {
         
-        let shiftY = parseInt((girdHeight.value - oldGridHeight) / 2);
-        let shiftX = parseInt((girdWidth.value - oldGridWidth) / 2);
+        let shiftY = parseInt((canvasHeight.value - oldCanvasHeight) / 2);
+        let shiftX = parseInt((canvasWidth.value - oldCanvasWidth) / 2);
         
         if(shiftX != 0 || shiftY != 0) {
-            for(let row = oldGridHeight - 1; row >= 0; row--) {
-                for(let col = oldGridWidth - 1; col >= 0; col--) {
+            for(let row = oldCanvasHeight - 1; row >= 0; row--) {
+                for(let col = oldCanvasWidth - 1; col >= 0; col--) {
                     if(row + shiftX < 0 || col + shiftY < 0) {
                         continue;
                     }
@@ -98,12 +120,12 @@ function makeGrid(rows, cols, re = false, shift = true) {
     }
 
     for(let row = 0; row < rows; row++) {
-        let tr = document.createElement("tr");
+        let tr = document.createElement('tr');
         pixelCanvas.appendChild(tr);
 
         for(let col = 0; col < cols; col++)
         {
-            let td = document.createElement("td")
+            let td = document.createElement('td')
             td.height = cellHeight.value;
             td.width = cellWidth.value;
             td.classList.add('tableData');
@@ -122,8 +144,8 @@ function makeGrid(rows, cols, re = false, shift = true) {
         }
     }
 
-    oldGridHeight = parseInt(girdHeight.value);
-    oldGridWidth = parseInt(girdWidth.value);
+    oldCanvasHeight = parseInt(canvasHeight.value);
+    oldCanvasWidth = parseInt(canvasWidth.value);
     
     triggerBorder(borderState);
     setEventListeners();
@@ -132,29 +154,9 @@ function makeGrid(rows, cols, re = false, shift = true) {
 
 function setCanvasSize() {
     CanvasSize = {
-        "width" : window.innerWidth - (menuBar.offsetWidth / 1.5),
-        "height" : window.innerHeight + (title.offsetHeight / 1.5)
+        'width' : window.innerWidth - (menuBar.offsetWidth / 1.5),
+        'height' : window.innerHeight + (title.offsetHeight / 1.5)
     };
-}
-
-function resetConfirmation() {
-    resetArea.innerHTML = '<span style="color:red">current work will be lost</span>' + 
-        '<input type="button" class="confirmation" value="CONFIRM" onclick="resetGridConfirm()">' +
-        '<input type="button" value="CANCEL" onclick="resetGridCancel()">';
-}
-
-function resetGridCancel() {
-    resetArea.innerHTML = '<input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>';
-}
-
-function resetGridConfirm() {
-    let tds = document.getElementsByClassName("tableData");
-    for(let i = 0; i < tds.length; i++) {
-        tds[i].style.backgroundColor = "";
-    }
-
-    makeGrid(0, 0);
-    resetGridCancel();
 }
 
 function triggerBorder(border = null) {
@@ -175,15 +177,15 @@ function triggerBorder(border = null) {
     }
     borderState = border;
 }
-//-----------------------Grid functions END Region
+//-----------------------Canvas functions END Region
 
 //-----------------------History functions Region
 function createHead() {
     let Head = new History(null);
     
     let data = new Object();
-    data["gridSize"] = { "height": 0, "width": 0 };
-    data["cellSize"] = { "height": 0, "width": 0 };
+    data['canvasSize'] = { 'height': 0, 'width': 0 };
+    data['cellSize'] = { 'height': 0, 'width': 0 };
     data["colorPicker"] = document.getElementById('colorPicker').value; 
     data["elementsColors"] = null;
     
@@ -205,16 +207,16 @@ function getCurrentChanges() {
 
     //getting classname CHECKED
     //dictionary contains each className with the colorValue like this ClassName: Color
-    currentChanges["gridSize"] = { "height": parseInt(girdHeight.value), "width": parseInt(girdWidth.value) };
-    currentChanges["cellSize"] = { "height": parseInt(cellHeight.value), "width": parseInt(cellWidth.value) };
-    currentChanges["colorPicker"] = document.getElementById('colorPicker').value; 
-    currentChanges["elementsColors"] = new Object();
+    currentChanges['canvasSize'] = { 'height': parseInt(canvasHeight.value), 'width': parseInt(canvasWidth.value) };
+    currentChanges['cellSize'] = { 'height': parseInt(cellHeight.value), 'width': parseInt(cellWidth.value) };
+    currentChanges['colorPicker'] = document.getElementById('colorPicker').value; 
+    currentChanges['elementsColors'] = new Object();
 
     for(let i = 0; i < tds.length; i++)
     {
         className = tds[i].classList[1];
         colorValue = tds[i].style.backgroundColor;
-        if(colorValue == "")
+        if(colorValue == '')
             continue;
         currentChanges.elementsColors[className] = colorValue;
     }
@@ -228,7 +230,7 @@ function undoChanges() {
 
     head = head.parent;    
     applySettings(head.data);
-    makeGrid(girdHeight.value, girdWidth.value, true, false);
+    makeCanvas(canvasHeight.value, canvasWidth.value, true, false);
 }
 
 function redoChanges() {
@@ -238,13 +240,13 @@ function redoChanges() {
     
     head = head.nodes[head.nodes.length - 1];    
     applySettings(head.data);
-    makeGrid(girdHeight.value, girdWidth.value, true, false);
+    makeCanvas(canvasHeight.value, canvasWidth.value, true, false);
     
 }
 
 function applySettings(data) {
-    girdHeight.value = data.gridSize.height;
-    girdWidth.value = data.gridSize.width;
+    canvasHeight.value = data.canvasSize.height;
+    canvasWidth.value = data.canvasSize.width;
 
     cellHeight.value = data.cellSize.height;
     cellWidth.value = data.cellSize.width;
@@ -258,11 +260,12 @@ function setRecommendedText () {
     setCanvasSize();
     let recommendedHeight = Math.floor(CanvasSize.height / cellHeight.value);
     let recommendedWidth = Math.floor(CanvasSize.width / cellWidth.value);
-    document.getElementById("recommended").innerHTML = `Recommended grid ${recommendedHeight} x ${recommendedWidth}`;
+    document.getElementById('recommended').innerHTML = `Recommended canvas ${recommendedHeight} x ${recommendedWidth}`;
+    document.getElementById('recommended').style.left = menuBar.offsetWidth +'px';
 }
 
 function setEventListeners() {
-    var tds = document.getElementsByClassName("tableData");
+    var tds = document.getElementsByClassName('tableData');
     for(let i = 0; i < tds.length; i++)
     {
         tds[i].addEventListener('mouseenter', ()=> {
@@ -277,8 +280,8 @@ function setEventListeners() {
             if(e.which != 1)
                 return;
 
-            resetGridCancel();
-            makeGridCancel();
+            resetCanvasCancel();
+            makeCanvasCancel();
             painting = true;
             if(Pencil) {
                 color = document.getElementById('colorPicker').value;
@@ -290,12 +293,22 @@ function setEventListeners() {
     }
 }
 
-$("#menuBar").submit(function(e) {
+$('#menuBar').submit(function(e) {
     e.preventDefault();
 });
 
 cellHeight.addEventListener('input', setRecommendedText);
 cellWidth.addEventListener('input', setRecommendedText);
+
+canvasHeight.addEventListener('input', () => {
+    makeCanvasCancel();
+    resetCanvasCancel();
+});
+
+canvasWidth.addEventListener('input', () => {
+    makeCanvasCancel();
+    resetCanvasCancel();
+});
 
 addEventListener('mouseup', (e) => {
     if(painting == false || e.which != 1)
@@ -305,10 +318,12 @@ addEventListener('mouseup', (e) => {
     painting = false
 });
 
-addEventListener("keydown", (event) => {
+addEventListener('keydown', (event) => {
     //P is down, triggernig the pencil
     if (event.keyCode === 80)
     {
+        resetCanvasCancel();
+        makeCanvasCancel();
         document.getElementById('pencil').style.backgroundColor = '#C0C04F';
         document.getElementById('eraser').style.backgroundColor = 'transparent';
         color = document.getElementById('colorPicker').value;
@@ -318,6 +333,8 @@ addEventListener("keydown", (event) => {
     //E is down, triggernig the eraser
     else if(event.keyCode === 69)
     {
+        resetCanvasCancel();
+        makeCanvasCancel();
         document.getElementById('pencil').style.backgroundColor = 'transparent';
         document.getElementById('eraser').style.backgroundColor = '#C0C04F';
         color = 'white';
@@ -327,6 +344,8 @@ addEventListener("keydown", (event) => {
     //E is down, triggernig the eraser
     else if(event.keyCode === 67)
     {
+        resetCanvasCancel();
+        makeCanvasCancel();
         document.getElementById('colorPicker').click();
         //set the Pencil as the active tool
         document.getElementById('pencil').style.backgroundColor = '#C0C04F';
@@ -356,4 +375,3 @@ document.getElementById('colorPicker').addEventListener('change', () => {
 
 setRecommendedText();
 setCanvasSize();
-document.body.style.zoom = '90%';

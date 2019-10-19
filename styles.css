@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  font-family: 'Nanum Gothic', sans-serif;
+  font-family: "Nanum Gothic", sans-serif;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -12,7 +12,7 @@ body {
 #recommended {
   position: fixed;
   color: rgb(218, 218, 218);
-  left: 200px;
+  left: 220px;
   top: 20px;
   z-index: 2;
 }
@@ -25,6 +25,7 @@ body {
   font-family: Monoton;
   font-size: 40px;
   background-color: #111;
+  z-index: 2;
 }
 
 td {
@@ -41,7 +42,34 @@ table {
   table-layout: fixed;
 }
 
-input, .toolsImage {
+
+#menuBar {
+  color: rgb(165, 165, 165);
+  height: 100%;
+  width: fit-content;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 40px;
+}
+
+.section {
+  margin-bottom: 10px;
+  background-color: rgb(32, 32, 32) !important;
+}
+
+.history-buttons {
+  width: 5.8em;
+}
+
+.canvas-buttons {
+  width: 95%;
+}
+
+input, .tools-image {
   height: 2.3em;
   border: none;
   margin: 8px 4px 4px 4px;
@@ -66,41 +94,17 @@ input[type="button"]:hover, input[type="submit"]:hover {
   background-color: teal;
 }
 
-#menuBar {
-  color: rgb(165, 165, 165);
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
-  overflow-x: hidden;
-  padding-top: 40px;
-}
-
-.section {
-  margin-bottom: 10px;
-  background-color: rgb(32, 32, 32) !important;
-}
-.changesMadeButtons {
-  width: 5em;
-}
-.gridButtons {
-  width: 11em;
-}
-
-.resetGrid, .confirmation {
+.reset-canvas, .confirmation {
   background-color: rgb(179, 67, 67)!important;
 }
 
-.toolsImage {
+.tools-image {
   margin-top: -12px;
   height: 2.3em;
   border-radius: 8px;
 }
 
-.toolsImage:hover, #pencil {
+.tools-image:hover, #pencil {
   background-color: #C0C04F;
 }
 

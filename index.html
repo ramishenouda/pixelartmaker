@@ -26,42 +26,42 @@
     <div id="recommended"></div>
 
     <form id="menuBar">
-        <h4>Grid Properties</h4>
-        <div class="gridProperties section">
-            Grid Height
-            <input type="number" min="1" value="5" id="gridHeight"> Grid Width
-            <input type="number" min="1" value="5" id="gridWidth">
+        <h4>Canvas Properties</h4>
+        <div class="section">
+            Canvas Height
+            <input type="number" min="1" value="5" id="canvasHeight"> <br> Canvas Width&nbsp;
+            <input type="number" min="1" value="5" id="canvasWidth">
+            <div id="applyArea">
+                <input type="submit" class="canvas-buttons" value="APPLY" onclick="attemptToMakeCanvas()">
+            </div>
         </div>
 
         <h4>Table Properties</h4>
-        <div class= "tableProperties section">
+        <div class= "section">
             Cell Height
-            <input type="number" min="1" value="50" id="cellHeight"> Cell Width
+            <input type="number" min="1" value="50" id="cellHeight"> <br> Cell Width&nbsp;
             <input type="number" min="1" value="50" id="cellWidth">
         </div>
         
         <h4>TOOLS (P, E, C)</h4>
-        <div class="tools section">
-            <img src="assets/pencil.png" id="pencil" alt="pencil" class="toolsImage">
-            <img src="assets/eraser.png" id="eraser" alt="eraser" class="toolsImage">
+        <div class="section">
+            <img src="assets/pencil.png" id="pencil" alt="pencil" class="tools-image">
+            <img src="assets/eraser.png" id="eraser" alt="eraser" class="tools-image">
             <input type="color" id="colorPicker" value="#111111">
         </div>
         
         <h4>OPTIONS</h4>
-        <div class="options section">
-            <div id="applyArea">
-                <input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">
+        <div class="section">
+            <div>
+                <input type="button" class="history-buttons" value="↶" onclick="undoChanges()">
+                <input type="button" class="history-buttons" value="↷" onclick="redoChanges()">
             </div>
             <div>
-                <input type="button" class="changesMadeButtons" value="↶" onclick="undoChanges()">
-                <input type="button" class="changesMadeButtons" value="↷" onclick="redoChanges()">
-            </div>
-            <div id="borderArea">
-                <input class="gridButtons boardArea" type="button" value="TRIGGER BORDER" onclick="triggerBorder()"> <br>
+                <input class="canvas-buttons" type="button" value="TRIGGER BORDER" onclick="triggerBorder()"> <br>
             </div>
 
             <div id="resetArea">
-                <input class="gridButtons resetGrid" type="button" value="RESET GRID" onclick="resetConfirmation()"> <br>
+                <input class="canvas-buttons confirmation" type="button" value="RESET CANVAS" onclick="resetConfirmation()"> <br>
             </div>
         </div>
     </form>
@@ -70,5 +70,4 @@
 
     <script src="designs.js"></script>
 </body>
-
 </html>
