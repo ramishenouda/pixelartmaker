@@ -5,6 +5,19 @@ class History {
         this.data = null;
         this.nodes = new Array();
     }
+
+    static createHead() {
+        let Head = new History(null);
+        
+        let data = new Object();
+        data.canvasSize = { 'height': 0, 'width': 0 };
+        data.cellSize = { 'height': 0, 'width': 0 };
+        data.colorPicker = document.getElementById('colorPicker').value; 
+        data.elementsColors = null;
+        
+        Head.data = data;
+        return Head;
+    }
 }
 
 //Getting canvas properties
@@ -27,7 +40,7 @@ let Pencil = true;
 let painting = false;
 let color;
 //The head to the tree
-let head = createHead();
+let head = History.createHead();
 //The recommended text
 let recommended = document.getElementById('recommended'); 
 //Title and menubar 
@@ -75,7 +88,7 @@ function resetCanvasConfirm() {
         tds[i].style.backgroundColor = '';
     }
 
-    makeCanvas(0, 0);
+    addCurrentChanges()
     resetCanvasCancel();
 }
 
@@ -180,19 +193,6 @@ function triggerBorder(border = null) {
 //-----------------------Canvas functions END Region
 
 //-----------------------History functions Region
-function createHead() {
-    let Head = new History(null);
-    
-    let data = new Object();
-    data['canvasSize'] = { 'height': 0, 'width': 0 };
-    data['cellSize'] = { 'height': 0, 'width': 0 };
-    data["colorPicker"] = document.getElementById('colorPicker').value; 
-    data["elementsColors"] = null;
-    
-    Head.data = data;
-    return Head;
-}
-
 function addCurrentChanges() {
     head.nodes.push(new History(head));
     head = head.nodes[head.nodes.length - 1];
@@ -261,8 +261,8 @@ function showHistory() {
 
 function setRecommendedText () {
     setCanvasSize();
-    let recommendedHeight = Math.floor(CanvasSize.height / cellHeight.value);
-    let recommendedWidth = Math.floor(CanvasSize.width / cellWidth.value);
+    let recommendedHeight = Math.floor(CanvasSize.height / (cellHeight.value * 1.1));
+    let recommendedWidth = Math.floor(CanvasSize.width / (cellWidth.value * 1.1));
     document.getElementById('recommended').innerHTML = `Recommended canvas ${recommendedHeight} x ${recommendedWidth}`;
     document.getElementById('recommended').style.left = menuBar.offsetWidth +'px';
 }
@@ -344,7 +344,7 @@ addEventListener('keydown', (event) => {
         Pencil = false;
     }
 
-    //E is down, triggernig the eraser
+    //C is down, triggernig the eraser
     else if(event.keyCode === 67)
     {
         resetCanvasCancel();
@@ -373,6 +373,10 @@ document.getElementById('eraser').addEventListener('mousedown', () => {
 });
 
 document.getElementById('colorPicker').addEventListener('change', () => {
+    document.getElementById('pencil').style.backgroundColor = '#C0C04F';
+    document.getElementById('eraser').style.backgroundColor = 'transparent';
+    color = document.getElementById('colorPicker').value;
+    Pencil = true;
     addCurrentChanges();
 });
 
