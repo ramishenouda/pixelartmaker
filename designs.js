@@ -106,7 +106,7 @@ function makeGrid(rows, cols, re = false, shift = true) {
             td.height = cellHeight.value;
             td.width = cellWidth.value;
             td.classList.add('tableData');
-            td.classList.add(`${row + '' + col}`);
+            td.classList.add(`${row + '_' + col}`);
             tr.appendChild(td);
 
             if(elementsColors != null) {
@@ -171,9 +171,6 @@ function createHead() {
 }
 
 function addCurrentChanges() {
-    if(getCurrentChanges() == head.data)
-        return;
-
     head.nodes.push(new History(head));
     head = head.nodes[head.nodes.length - 1];
     head.data = getCurrentChanges();
