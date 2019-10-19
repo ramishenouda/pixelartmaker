@@ -10,6 +10,8 @@ class History {
 //Getting gird properties
 let girdHeight = document.getElementById("gridHeight");
 let girdWidth = document.getElementById("gridWidth");
+let oldGridHeight = null;
+let oldGridWidth = null;
 //Getting cells properties
 let cellHeight = document.getElementById("cellHeight");
 let cellWidth = document.getElementById("cellWidth");
@@ -45,7 +47,7 @@ function attemptToMakeGrid() {
 }
 
 function gridConfirmation() {
-    applyArea.innerHTML = 
+    applyArea.innerHTML = '<span style="color:red"/>Your work may conflict</span>' +
         `<input type="submit" class="confirmation" value="Confirm" onclick="makeGrid(${girdHeight.value}, ${girdWidth.value})">` +
         '<input type="button" value="Cancel" onclick="makeGridCancel()">';
 }
@@ -54,10 +56,12 @@ function makeGridCancel() {
     applyArea.innerHTML = '<input type="submit" class="gridButtons" value="APPLY" onclick="attemptToMakeGrid()">';
 }
 
-function makeGrid(rows, cols, elementsColors = null, re = false) {
+function makeGrid(rows, cols, re = false, shift = true) {
     makeGridCancel();
     if(re == false)
         addCurrentChanges();
+    
+    elementsColors = head.data.elementsColors;
 
     let leftValue = boardSize.width - (cellWidth.value * girdWidth.value) / 2;
     let topValue = boardSize.height - (cellHeight.value * girdHeight.value) / 2;
@@ -68,6 +72,30 @@ function makeGrid(rows, cols, elementsColors = null, re = false) {
     //TODO don't remove existing cells
     pixelCanvas.innerHTML = "";
     
+    //or oldCellWidth
+    if(oldGridHeight != null && shift == true) {
+        
+        let shiftY = parseInt((girdHeight.value - oldGridHeight) / 2);
+        let shiftX = parseInt((girdWidth.value - oldGridWidth) / 2);
+        
+        if(shiftX != 0 || shiftY != 0) {
+            for(let row = oldGridHeight - 1; row >= 0; row--) {
+                for(let col = oldGridWidth - 1; col >= 0; col--) {
+                    if(row + shiftX < 0 || col + shiftY < 0) {
+                        continue;
+                    }
+                    
+                    if(`${parseInt(row) + '' + parseInt(col)}` in elementsColors) {
+                        elementsColors[`${(row + shiftY) + '' + (col + shiftX)}`] = elementsColors[`${parseInt(row) + '' + parseInt(col)}`];
+                        delete elementsColors[`${row + '' + col}`];
+                    }
+                }
+            }
+        }
+
+        head.data.elementsColors = elementsColors;
+    }
+
     for(let row = 0; row < rows; row++) {
         let tr = document.createElement("tr");
         pixelCanvas.appendChild(tr);
@@ -92,6 +120,9 @@ function makeGrid(rows, cols, elementsColors = null, re = false) {
             }
         }
     }
+
+    oldGridHeight = parseInt(girdHeight.value);
+    oldGridWidth = parseInt(girdWidth.value);
 
     setEventListeners();
     getCurrentChanges();
@@ -179,7 +210,7 @@ function undoChanges() {
 
     head = head.parent;    
     applySettings(head.data);
-    makeGrid(girdHeight.value, girdWidth.value, head.data.elementsColors, true);
+    makeGrid(girdHeight.value, girdWidth.value, true, false);
 }
 
 function redoChanges() {
@@ -189,7 +220,7 @@ function redoChanges() {
     
     head = head.nodes[head.nodes.length - 1];    
     applySettings(head.data);
-    makeGrid(girdHeight.value, girdWidth.value, head.data.elementsColors, true);
+    makeGrid(girdHeight.value, girdWidth.value, true, false);
     
 }
 
