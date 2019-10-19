@@ -34,18 +34,13 @@ td {
   border: 1px solid #cab3b3;
 }
 
-#pixelCanvas, #tree {
+#pixelCanvas {
   position: absolute;
   width: max-content;
   height: max-content;
   left: 230px;
   top: 50px;
   border-collapse: collapse;
-}
-
-#tree {
-  opacity: 0;
-  text-align: left;
 }
 
 #menuBar {
