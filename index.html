@@ -26,7 +26,7 @@
     
     <div id="recommended"></div>
     <form id="menuBar">
-        <h4>Canvas Properties</h4>
+        <h5>Canvas Properties</h4>
         <div class="section">
             Canvas Height
             <input type="number" min="1" value="11" id="canvasHeight"> <br> Canvas Width&nbsp;
@@ -36,25 +36,26 @@
             </div>
         </div>
 
-        <h4>Table Properties</h4>
+        <h5>Table Properties</h4>
         <div class= "section">
             Cell Height
             <input type="number" min="1" value="50" id="cellHeight"> <br> Cell Width&nbsp;
             <input type="number" min="1" value="50" id="cellWidth">
         </div>
         
-        <h4>TOOLS (P, E, C)</h4>
+        <h5>TOOLS (P, E, C)</h4>
         <div class="section">
             <img src="assets/pencil.png" id="pencil" alt="pencil" class="tools-image">
             <img src="assets/eraser.png" id="eraser" alt="eraser" class="tools-image">
             <input type="color" id="colorPicker" value="#E21D3A">
         </div>
         
-        <h4>OPTIONS</h4>
+        <h5>OPTIONS</h4>
         <div class="section">
             <div>
                 <input type="button" class="history-buttons" value="↶" onclick="undoChanges()">
-                <input type="button" class="history-buttons" value="↷" onclick="redoChanges()"> <br>
+                <input type="button" class="history-buttons" value="↷" onclick="redoChanges()">
+                <input class="canvas-buttons" type="button" value="History" onclick="showHistory()">
             </div>
             <div>
                 <input class="canvas-buttons" type="button" value="TRIGGER BORDER" onclick="triggerBorder()"> <br>
@@ -67,6 +68,7 @@
     </form>
 
     <table id="pixelCanvas"></table>
+    <div id="tree"></div>
     <script src="designs.js"></script>
 </body>
 </html>

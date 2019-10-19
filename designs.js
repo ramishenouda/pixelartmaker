@@ -162,7 +162,6 @@ function makeCanvas(rows, cols, re = false, shift = true) {
     
     triggerBorder(borderState);
     setEventListeners();
-    getCurrentChanges();
 }
 
 function setCanvasSize() {
@@ -252,17 +251,13 @@ function applySettings(data) {
 
     document.getElementById('colorPicker').value = data.colorPicker;
 }
-
-function showHistory() {
-    
-}
 //-----------------------History function END Region
 
 function setRecommendedText () {
     setCanvasSize();
     let recommendedHeight = Math.floor(CanvasSize.height / (cellHeight.value * 1.1));
     let recommendedWidth = Math.floor(CanvasSize.width / (cellWidth.value * 1.1));
-    document.getElementById('recommended').innerHTML = `fit canvas ${recommendedHeight} x ${recommendedWidth}, zoom 80%`;
+    document.getElementById('recommended').innerHTML = `fit canvas ${recommendedHeight} x ${recommendedWidth}`;
     document.getElementById('recommended').style.left = menuBar.offsetWidth +'px';
 }
 
